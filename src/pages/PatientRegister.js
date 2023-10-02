@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-function Home(){
+function PatientRegister(){
   const [patient,setPatient] = useState({
     patientName: "",
     patientEmail: "",
@@ -238,4 +238,4 @@ const patientRegister = async ()=>{
     
 
 
-export default Home
+export default PatientRegister
