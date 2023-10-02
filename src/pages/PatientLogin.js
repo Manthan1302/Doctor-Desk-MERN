@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 
 
 function PatientLogin() {
@@ -10,6 +10,9 @@ function PatientLogin() {
         patientPassword: ""
     });
 
+    const referesh = (e) => {
+        e.preventDefault();
+      };
     const setData = (e) => {
         console.log(e.target.value);
         const { name, value } = e.target;
@@ -22,10 +25,15 @@ function PatientLogin() {
     }
 
     const PatientLogin = async () => {
+        console.log(patient);
         try {
             const response = await axios.post("http://localhost:8888/patientSignIn", patient);
-            console.log('response', response);
-            return navigate('/patientHome');
+            if (response) {
+                navigate('/patientHome', { replace: true });
+            }
+            else {
+                console.log("sajdbasjd");
+            }
         } catch (error) {
             console.log('error', error);
         }
@@ -38,7 +46,6 @@ function PatientLogin() {
                         Medic Care
                         <strong className="d-block">Health Specialist</strong>
                     </a>
-
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -64,7 +71,7 @@ function PatientLogin() {
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link">
-                                    <NavLink to="/">Register</NavLink>
+                                    <NavLink to="/patientRegister">Register</NavLink>
                                 </a>
                             </li>
                         </ul>
@@ -81,7 +88,7 @@ function PatientLogin() {
                                     <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">
                                         Patient Login
                                     </h3>
-                                    <form className="px-md-2" >
+                                    <form className="px-md-2" method='post' onSubmit={(e) => referesh(e)}>
                                         <div className="form-outline mb-4">
                                             <label style={{ marginRight: 470 }} className="form-label" htmlFor="form3Example1q">
                                                 Email
@@ -123,7 +130,7 @@ function PatientLogin() {
                                             <button
                                                 type="submit"
                                                 className="btn btn-success btn-lg mb-1"
-                                                onClick={PatientLogin}
+                                                onClick={() => PatientLogin()}
                                             >
                                                 Login
                                             </button>

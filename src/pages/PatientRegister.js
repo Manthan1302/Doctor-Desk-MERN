@@ -1,39 +1,52 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
-function PatientRegister(){
-  const [patient,setPatient] = useState({
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+
+function PatientRegister() {
+  const navigate = useNavigate();
+
+  const [patient, setPatient] = useState({
     patientName: "",
     patientEmail: "",
     patientPhoneNumber: null,
     patientAdd: "",
     patientAge: null,
     patientGender: "",
-    patientPassword:""
+    patientPassword: ""
   });
 
-  const setData = (e) =>{
+  const setData = (e) => {
     console.log(e.target.value);
-    const {name,value} = e.target;
-    setPatient((preVal)=>{
-        return{
-            ...preVal,
-            [name]:value
-        }
+    const { name, value } = e.target;
+    setPatient((preVal) => {
+      return {
+        ...preVal,
+        [name]: value
+      }
     })
-}
-//register 
-const patientRegister = async ()=>{
-  try {
-    const response = await axios.post("http://localhost:8888/patientSignup",patient);
-    console.log('response',response);
-  } catch (error) {
-    console.log('error',error);
   }
-}
-    return(
-   
-      <div>
+
+  const referesh = (e) => {
+    e.preventDefault();
+  };
+  //register 
+  const patientRegister = async () => {
+    try {
+      const response = await axios.post("http://localhost:8888/patientSignup", patient);
+      console.log('response', response);
+      if (!response) {
+        console.log("Not Register");
+      }
+      // console.log("Register Done");
+      navigate('/patientHome', { replace: true });
+
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+  return (
+
+    <div>
       <nav className="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
         <div className="container">
           <a className="navbar-brand mx-auto d-lg-none" href="index.html">
@@ -66,7 +79,7 @@ const patientRegister = async ()=>{
               </li>
               <li className="nav-item">
                 <a className="nav-link">
-                <NavLink to="/patientLogin">Login</NavLink>
+                  <NavLink to="/">Login</NavLink>
                 </a>
               </li>
             </ul>
@@ -83,9 +96,9 @@ const patientRegister = async ()=>{
                   <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">
                     Patient Registration
                   </h3>
-                  <form className="px-md-2" >
+                  <form className="px-md-2" method='post' onSubmit={(e) => referesh(e)}>
                     <div className="form-outline mb-4">
-                      <label style={{marginRight:470}}>
+                      <label style={{ marginRight: 470 }}>
                         Name
                       </label>
                       <input
@@ -94,12 +107,12 @@ const patientRegister = async ()=>{
                         placeholder="Enter Your name"
                         name="patientName"
                         value={patient.patientName}
-                        onChange = {setData}
+                        onChange={setData}
                         required
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{marginRight:100}} htmlFor="form3Example1q">
+                      <label className="form-label" style={{ marginRight: 100 }} htmlFor="form3Example1q">
                         Phone Number
                       </label>
                       <input
@@ -111,12 +124,12 @@ const patientRegister = async ()=>{
                         pattern="[6-9]\d{9}"
                         title="Incorrect Mobile Number"
                         required
-                        onChange = {setData}
+                        onChange={setData}
                       />
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label style={{marginRight:470}} className="form-label" htmlFor="form3Example1q">
+                      <label style={{ marginRight: 470 }} className="form-label" htmlFor="form3Example1q">
                         Email
                       </label>
                       <input
@@ -126,12 +139,26 @@ const patientRegister = async ()=>{
                         name="patientEmail"
                         value={patient.patientEmail}
                         pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
-                        onChange = {setData}
+                        onChange={setData}
+                        required
+                      />
+                    </div>
+                    <div className="form-outline mb-4">
+                      <label style={{ marginRight: 470 }}>
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Your Address"
+                        name="patientAdd"
+                        value={patient.patientAdd}
+                        onChange={setData}
                         required
                       />
                     </div>
 
-                    <div className="border mb-4" style={{ padding: '5px' , marginRight:100}}>
+                    <div className="border mb-4" style={{ padding: '5px', marginRight: 100 }}>
                       <label
                         className="form-label"
                         htmlFor="form3Example1q"
@@ -144,9 +171,9 @@ const patientRegister = async ()=>{
                         <input
                           type="radio"
                           name="patientGender"
-                        value={patient.patientGender}
+                          value={patient.patientGender}
                           style={{ marginLeft: '25px' }}
-                          onChange = {setData}
+                          onChange={setData}
                         />
                         Male
                       </label>
@@ -155,16 +182,16 @@ const patientRegister = async ()=>{
                         <input
                           type="radio"
                           name="patientGender"
-                        value={patient.patientGender}
+                          value={patient.patientGender}
                           style={{ marginLeft: '25px' }}
-                          onChange = {setData}
+                          onChange={setData}
                         />
                         Female
                       </label>
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{marginRight:470}} htmlFor="form3Example1q">
+                      <label className="form-label" style={{ marginRight: 470 }} htmlFor="form3Example1q">
                         Age
                       </label>
                       <input
@@ -173,13 +200,13 @@ const patientRegister = async ()=>{
                         placeholder="Enter Age"
                         name="patientAge"
                         value={patient.patientAge}
-                        onChange = {setData}
+                        onChange={setData}
                         required
                       />
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{marginRight:470}} htmlFor="form3Example1q">
+                      <label className="form-label" style={{ marginRight: 470 }} htmlFor="form3Example1q">
                         Password
                       </label>
                       <input
@@ -191,12 +218,12 @@ const patientRegister = async ()=>{
                         value={patient.patientPassword}
                         // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
                         // title="Must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long"
-                        onChange = {setData}
+                        onChange={setData}
                         required
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{marginRight:380}} htmlFor="form3Example1q">
+                      <label className="form-label" style={{ marginRight: 380 }} htmlFor="form3Example1q">
                         Confirm Password
                       </label>
                       <input
@@ -205,7 +232,7 @@ const patientRegister = async ()=>{
                         className="form-control"
                         placeholder="Confirm password"
                         name="confirmPassword"
-                        onChange = {setData}
+                        onChange={setData}
                         required
                       />
                     </div>
@@ -233,9 +260,9 @@ const patientRegister = async ()=>{
         </div>
       </footer>
     </div>
-		  )
+  )
 }
-    
+
 
 
 export default PatientRegister
