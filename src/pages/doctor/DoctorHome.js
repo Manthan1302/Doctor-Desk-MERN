@@ -24,8 +24,11 @@ function DoctorHome(){
                     Doctor Desk
                     <strong class="d-block">Health Specialist</strong>
                 </a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/doctorAppointments">Pending Appointments</a>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/doctorAppointments">Appointments</a>
+                    <a class="nav-link" href="/doctorConfirmAppointments">Confirm Appointments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/doctorPatient">Patients</a>

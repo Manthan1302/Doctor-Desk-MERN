@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 
-function PatientRegister() {
+function PatientRegister({ updatePatient, updateToken }) {
   const navigate = useNavigate();
 
   const [patient, setPatient] = useState({
@@ -14,7 +14,9 @@ function PatientRegister() {
     patientGender: "",
     patientPassword: ""
   });
-
+  const referesh = (e) => {
+    e.preventDefault();
+  };
   const setData = (e) => {
     console.log(e.target.value);
     const { name, value } = e.target;
@@ -26,19 +28,21 @@ function PatientRegister() {
     })
   }
 
-  const referesh = (e) => {
-    e.preventDefault();
-  };
+
   //register 
   const patientRegister = async () => {
+    console.log(patient);
     try {
-      const response = await axios.post("http://localhost:8888/patientSignup", patient);
-      console.log('response', response);
-      if (!response) {
-        console.log("Not Register");
-      }
-      // console.log("Register Done");
-      navigate('/patientHome', { replace: true });
+      const response = await axios.post("http://localhost:8888/patientSignup", patient)
+        .then(res => {
+          console.log(res);
+          updatePatient(res.data.newPatient);
+          updateToken(res.data.token)
+          navigate('/patientHome', { replace: true });
+        })
+
+      // console.log('response', response);
+
 
     } catch (error) {
       console.log('error', error);
@@ -171,7 +175,7 @@ function PatientRegister() {
                         <input
                           type="radio"
                           name="patientGender"
-                          value={patient.patientGender}
+                          value="Male"
                           style={{ marginLeft: '25px' }}
                           onChange={setData}
                         />
@@ -182,7 +186,7 @@ function PatientRegister() {
                         <input
                           type="radio"
                           name="patientGender"
-                          value={patient.patientGender}
+                          value="Female"
                           style={{ marginLeft: '25px' }}
                           onChange={setData}
                         />
@@ -223,7 +227,7 @@ function PatientRegister() {
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{ marginRight: 380 }} htmlFor="form3Example1q">
+                      <label className="form-label" style={{ marginRight: 30 }} htmlFor="form3Example1q">
                         Confirm Password
                       </label>
                       <input

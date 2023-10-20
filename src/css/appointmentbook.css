@@ -2,12 +2,11 @@
     display:flex
   }
   .half{
-    flex:50%
-
+    flex:50%;
   }
   * {
     margin: 0;
-    padding: 0;
+    padding: 1px;
     box-sizing: border-box;
   }
   body {
@@ -31,6 +30,7 @@
     margin: 0 auto;
     max-width: 550px;
     width: 100%;
+    /* margin-bottom: 100px; */
     /* background: white; */
   }
   .formbold-form-label {

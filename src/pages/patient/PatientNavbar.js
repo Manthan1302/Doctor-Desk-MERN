@@ -1,7 +1,8 @@
-import '../../css/admindashboard.css'
-function AdminDashboard(){
-    return(
-        <div className="master">
+function PatientNavbar({ updatePatient }) {
+    return (
+
+        <div>
+
             <nav className="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
                 <div className="container">
                     <a class="navbar-brand mx-auto d-lg-none" href="index.html">
@@ -15,29 +16,42 @@ function AdminDashboard(){
 
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav mx-auto">
-                            
+
                             {/* {% comment %} <label class="form-label" for="form3Example1q">Welcome {{request.session.loginname}}</label> {% endcomment %} */}
-                            <a className="navbar-brand d-none d-lg-block" style={{marginRight:"1100px"}}href="/Patienthome">
+                            <a className="navbar-brand d-none d-lg-block" href="/Patienthome">
                                 Doctor Desk
-                                 <strong className="d-block">Health Specialist</strong>
-                             </a>
+                                <strong className="d-block">Health Specialist</strong>
+                            </a>
+
 
 
                             <li className="nav-item">
-                                <a className="nav-link" href="/adminLogout" >Logout</a>
+                                <a className="nav-link" href="/patientAppointment">Appointment</a>
                             </li>
-                            
+                            <li className="nav-item">
+                                <a className="nav-link" href="/Patienthome#contact">Contact</a>
+                            </li>
+
+                            <li className="nav-item">
+                                <a className="nav-link" href="/Patienthome#about" >About</a>
+                            </li>
+
+                            <li className="nav-item">
+                                <a className="nav-link" href="/patientProfile" >Profile</a>
+                            </li>
+
+                            <li className="nav-item">
+                                <a className="nav-link" href="/" onClick={() => updatePatient({})}>Logout</a>
+                            </li>
+
                         </ul>
                     </div>
 
                 </div>
             </nav>
 
-
-            <div className="box"><div className="text1">Doctor</div></div>
-            <div className="box"><div className="text1">Patient</div></div>
         </div>
     )
 }
 
-export default AdminDashboard;
+export default PatientNavbar;

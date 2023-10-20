@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+function PatientLogin({ updatePatient, updatePatientToken }) {
 
-function PatientLogin() {
     const navigate = useNavigate();
     const [patient, setPatient] = useState({
         patientEmail: "",
@@ -12,7 +14,7 @@ function PatientLogin() {
 
     const referesh = (e) => {
         e.preventDefault();
-      };
+    };
     const setData = (e) => {
         console.log(e.target.value);
         const { name, value } = e.target;
@@ -24,16 +26,22 @@ function PatientLogin() {
         })
     }
 
+
+
     const PatientLogin = async () => {
         console.log(patient);
         try {
-            const response = await axios.post("http://localhost:8888/patientSignIn", patient);
-            if (response) {
-                navigate('/patientHome', { replace: true });
-            }
-            else {
-                console.log("sajdbasjd");
-            }
+            const response = await axios.post("http://localhost:8888/patientSignIn", patient)
+                .then(res => {
+                    console.log('res', res);
+                    updatePatient(res.data.patient)
+                    updatePatientToken(res.data.token)
+                    navigate('/patientHome', { replace: true });
+                    toast.success("login successfull");
+                })
+
+
+
         } catch (error) {
             console.log('error', error);
         }
@@ -77,6 +85,7 @@ function PatientLogin() {
                         </ul>
                     </div>
                 </div>
+
             </nav>
 
             <section className="h-100 h-custom">
@@ -149,6 +158,8 @@ function PatientLogin() {
                     {/* ... Your Footer JSX here ... */}
                 </div>
             </footer>
+            <ToastContainer />
+
         </div>
     )
 }
