@@ -1,8 +1,8 @@
-import 'react-toastify/dist/ReactToastify.css';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { NavLink, Navigate, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 function PatientRegister({ updatePatient, updatePatientToken }) {
   const navigate = useNavigate();
 
@@ -13,53 +13,41 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
     patientAdd: "",
     patientAge: null,
     patientGender: "",
-    patientPassword: ""
+    patientPassword: "",
   });
   const referesh = (e) => {
     e.preventDefault();
   };
   const setData = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     const { name, value } = e.target;
     setPatient((preVal) => {
       return {
         ...preVal,
-        [name]: value
-      }
-    })
-  }
-  
+        [name]: value,
+      };
+    });
+  };
 
-
-  //register 
+  //register
   const patientRegister = async () => {
-    // console.log(patient);
+    console.log(patient);
     const pass1 = document.getElementById("password").value;
     const pass2 = document.getElementById("confirmPassword").value;
 
     try {
-      if(pass1 === pass2){
-        const response = await axios.post("http://localhost:8888/patientSignup", patient)
-        .then(res => {
-          console.log(res);
-          
-          updatePatient(res.data.newPatient);
-          updatePatientToken(res.data.token)
-          toast.success('Register Successfully', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          navigate('/patientHome', { replace: true });
-        })
-      }
-      else{
-        toast.success('Please Enter Both Password Same', {
+      if (
+        pass1 === "" ||
+        pass2 === "" ||
+        patient.patientName === "" ||
+        patient.patientEmail === "" ||
+        patient.patientPhoneNumber === "" ||
+        patient.patientAdd === "" ||
+        patient.patientAge === "" ||
+        patient.patientGender === "" ||
+        patient.patientPassword === ""
+      ) {
+        return toast.error("please fill all the details!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -71,14 +59,46 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
         });
       }
 
+      // console.log(patient);
 
+      if (pass1 === pass2) {
+        const response = await axios
+          .post("http://localhost:8888/patientSignup", patient)
+          .then((res) => {
+            console.log(res);
 
+            updatePatient(res.data.newPatient);
+            updatePatientToken(res.data.token);
+            toast.success("Register Successfully", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            navigate("/patientHome", { replace: true });
+          });
+      } else {
+        toast.success("Please Enter Both Password Same", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
     } catch (error) {
-      console.log('error', error);
+      console.log("error", error);
     }
-  }
-  return (
+  };
 
+  return (
     <div>
       <nav className="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
         <div className="container">
@@ -129,11 +149,13 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                   <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">
                     Patient Registration
                   </h3>
-                  <form className="px-md-2" method='post' onSubmit={(e) => referesh(e)}>
+                  <form
+                    className="px-md-2"
+                    method="post"
+                    onSubmit={(e) => referesh(e)}
+                  >
                     <div className="form-outline mb-4">
-                      <label style={{ marginRight: 470 }}>
-                        Name
-                      </label>
+                      <label style={{ marginRight: 470 }}>Name</label>
                       <input
                         type="text"
                         className="form-control"
@@ -145,7 +167,11 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{ marginRight: 100 }} htmlFor="form3Example1q">
+                      <label
+                        className="form-label"
+                        style={{ marginRight: 100 }}
+                        htmlFor="form3Example1q"
+                      >
                         Phone Number
                       </label>
                       <input
@@ -162,7 +188,11 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label style={{ marginRight: 470 }} className="form-label" htmlFor="form3Example1q">
+                      <label
+                        style={{ marginRight: 470 }}
+                        className="form-label"
+                        htmlFor="form3Example1q"
+                      >
                         Email
                       </label>
                       <input
@@ -177,9 +207,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label style={{ marginRight: 470 }}>
-                        Address
-                      </label>
+                      <label style={{ marginRight: 470 }}>Address</label>
                       <input
                         type="text"
                         className="form-control"
@@ -191,11 +219,14 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                       />
                     </div>
 
-                    <div className="border mb-4" style={{ padding: '5px', marginRight: 100 }}>
+                    <div
+                      className="border mb-4"
+                      style={{ padding: "5px", marginRight: 100 }}
+                    >
                       <label
                         className="form-label"
                         htmlFor="form3Example1q"
-                        style={{ marginLeft: '5px', marginTop: '3px' }}
+                        style={{ marginLeft: "5px", marginTop: "3px" }}
                       >
                         Gender:
                       </label>
@@ -205,7 +236,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                           type="radio"
                           name="patientGender"
                           value="Male"
-                          style={{ marginLeft: '25px' }}
+                          style={{ marginLeft: "25px" }}
                           onChange={setData}
                         />
                         Male
@@ -216,7 +247,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                           type="radio"
                           name="patientGender"
                           value="Female"
-                          style={{ marginLeft: '25px' }}
+                          style={{ marginLeft: "25px" }}
                           onChange={setData}
                         />
                         Female
@@ -224,7 +255,11 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{ marginRight: 470 }} htmlFor="form3Example1q">
+                      <label
+                        className="form-label"
+                        style={{ marginRight: 470 }}
+                        htmlFor="form3Example1q"
+                      >
                         Age
                       </label>
                       <input
@@ -239,7 +274,11 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                     </div>
 
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{ marginRight: 470 }} htmlFor="form3Example1q">
+                      <label
+                        className="form-label"
+                        style={{ marginRight: 470 }}
+                        htmlFor="form3Example1q"
+                      >
                         Password
                       </label>
                       <input
@@ -256,7 +295,11 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                       />
                     </div>
                     <div className="form-outline mb-4">
-                      <label className="form-label" style={{ marginRight: 30 }} htmlFor="form3Example1q">
+                      <label
+                        className="form-label"
+                        style={{ marginRight: 30 }}
+                        htmlFor="form3Example1q"
+                      >
                         Confirm Password
                       </label>
                       <input
@@ -273,14 +316,14 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                       <button
                         type="submit"
                         className="btn btn-success btn-lg mb-1"
-                        onClick={() =>  patientRegister()}
+                        onClick={() => patientRegister()}
                       >
                         Register
                       </button>
                     </section>
                   </form>
                 </div>
-                <ToastContainer/>
+                <ToastContainer />
               </div>
             </div>
           </div>
@@ -299,7 +342,6 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                   9:00 AM - 12:30 PM<br></br>
                   4:00 PM - 7:30 PM
                 </li>
-
               </ul>
             </div>
             <div className="col-lg-2 col-md-6 col-12 my-4 my-lg-0">
@@ -313,9 +355,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-
-
-export default PatientRegister
+export default PatientRegister;
