@@ -105,6 +105,7 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                 <th>Disease</th>
                                 <th>Date</th>
                                 <th >Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,69 +123,73 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                                 <td>
                                                     <button type="submit" class="btn btn-danger" onClick={() => rejectAppointment(item)}>Reject</button>
                                                 </td>
-                                            </tr>
-                                        )
-                                    }
-
-                                })
-                            }
-
-                        </tbody>
-                    </table>
-
-                </section>
-                <section style={{ padding: "15px" }}>
-
-                    <div class="flex">
-                        <div style={{ flex: "50%" }}><h5>4pm-7pm</h5></div>
-                    </div>
-
-                    <table class="table">
-                        <thead class="table-success">
-                            <tr>
-                                <th>Patient Name</th>
-                                <th>Contact Number</th>
-                                <th>Age</th>
-                                <th>Gender</th>
-                                <th>Disease</th>
-                                <th>Date</th>
-                                <th>Action</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {
-                                approveAppointment.map((item) => {
-                                    if (item.TimeSlot === "4-7" && item.appointmentStatus === "approved") {
-                                        return (
-                                            <tr>
-                                                <td>{item.patient.patientName}</td>
-                                                <td>{item.patient.patientPhoneNumber}</td>
-                                                <td>{item.patient.patientAge}</td>
-                                                <td>{item.patient.patientGender}</td>
-                                                <td>{item.appointmentDiseases}</td>
-                                                <td>{item.bookingDate}</td>
                                                 <td>
-                                                    <button type="submit" class="btn btn-danger" onClick={() => rejectAppointment(item)}>Reject</button>
-                                                </td>
+                                                    <button type='submit' class="btn btn-primary" ><NavLink to="/makePrescription" style={({ isActive }) => ({
+                                                        color: isActive ? 'greenyellow' : 'white' })}> Make Prescription</NavLink></button>
+                                            </td>
                                             </tr>
-                                        )
+                        )
                                     }
 
                                 })
                             }
 
+                    </tbody>
+                </table>
 
-                        </tbody>
-                    </table>
+            </section>
+            <section style={{ padding: "15px" }}>
+
+                <div class="flex">
+                    <div style={{ flex: "50%" }}><h5>4pm-7pm</h5></div>
+                </div>
+
+                <table class="table">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Contact Number</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Disease</th>
+                            <th>Date</th>
+                            <th>Action</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {
+                            approveAppointment.map((item) => {
+                                if (item.TimeSlot === "4-7" && item.appointmentStatus === "approved") {
+                                    return (
+                                        <tr>
+                                            <td>{item.patient.patientName}</td>
+                                            <td>{item.patient.patientPhoneNumber}</td>
+                                            <td>{item.patient.patientAge}</td>
+                                            <td>{item.patient.patientGender}</td>
+                                            <td>{item.appointmentDiseases}</td>
+                                            <td>{item.bookingDate}</td>
+                                            <td>
+                                                <button type="submit" class="btn btn-danger" onClick={() => rejectAppointment(item)}>Reject</button>
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+
+                            })
+                        }
+
+
+                    </tbody>
+                </table>
 
 
 
-                </section>
-            </main>
-        </div>
+            </section>
+        </main>
+        </div >
     )
 }
 

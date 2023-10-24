@@ -14,7 +14,7 @@ import DoctorAppointments from './pages/doctor/DoctorAppointments';
 import DoctorConfirmAppointments from './pages/doctor/DoctorConfirmAppointments';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import PatientAppointmentHistory from "./pages/patient/PatientAppointmentHistory";
-
+import Prescription from './pages/doctor/Prescription';
 function App() {
   const [patient, setPatient] = useState({});
   const [patientToken,setPatientToken] = useState({});
@@ -78,6 +78,7 @@ function App() {
         <Route path='/doctorPatient' element={<DoctorPatient updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
         <Route path='/doctorAppointments' Component={DoctorAppointments} />
         <Route path='/doctorConfirmAppointments' element={<DoctorConfirmAppointments updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
+        <Route path='/makePrescription' element={<Prescription updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
 
 
         <Route path='/adminDashboard' Component={AdminDashboard} />
