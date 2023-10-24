@@ -5,11 +5,11 @@ import image3 from '../../image/medium-shot-man-getting-vaccine.jpg'
 import PatientNavbar from './PatientNavbar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-function PatientHome({ updatePatient }) {
+function PatientHome({ updatePatient,updatePatientToken }) {
   return (
 
     <div>
-      <PatientNavbar updatePatient={updatePatient}></PatientNavbar>
+      <PatientNavbar updatePatient={updatePatient} updatePatientToken={updatePatientToken}></PatientNavbar>
       <section className="hero" id="hero">
         <div className="container">
 

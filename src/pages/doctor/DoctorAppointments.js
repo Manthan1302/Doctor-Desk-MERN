@@ -55,15 +55,15 @@ function DoctorAppointments({ updateDoctor, updateDoctorToken }) {
     let token = localStorage.getItem("DoctorToken");
     token = JSON.parse(token);
     try {
-        const headers = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.delete(`http://localhost:8888/doctor/cancelAppointment/${id}`, headers);
-        // navigate("/doctorConfirmAppointments");
-        window.location.reload(false);
-        console.log(response);
+      const headers = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.delete(`http://localhost:8888/doctor/cancelAppointment/${id}`, headers);
+      // navigate("/doctorConfirmAppointments");
+      window.location.reload(false);
+      console.log(response);
     } catch (error) {
-        console.log('error', error);
+      console.log('error', error);
     }
-}
+  }
   return (
     <div>
       <main>

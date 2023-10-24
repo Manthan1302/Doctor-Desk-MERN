@@ -1,8 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function PatientLogin({ updatePatient, updatePatientToken }) {
 
@@ -11,6 +11,7 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
         patientEmail: "",
         patientPassword: ""
     });
+
 
     const referesh = (e) => {
         e.preventDefault();
@@ -32,16 +33,34 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
         console.log(patient);
         try {
             const response = await axios.post("http://localhost:8888/patientSignIn", patient)
-                .then(res => {
-                    console.log('res', res);
-                    updatePatient(res.data.patient)
-                    updatePatientToken(res.data.token)
-                    navigate('/patientHome', { replace: true });
-                    toast.success("login successfull");
-                })
-
-
-
+            if (response) {
+                updatePatient(response.data.patient)
+                updatePatientToken(response.data.token)
+                toast.success('Login Successfully', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                navigate('/patientHome', { replace: true });
+            }
+            else {
+                // toast.error('Enter Valid Details', {
+                //     position: "top-right",
+                //     autoClose: 5000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: "colored",
+                // });
+                alert("DSfsf")
+            }
         } catch (error) {
             console.log('error', error);
         }
@@ -113,10 +132,6 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
                                                 required
                                             />
                                         </div>
-
-
-
-
                                         <div className="form-outline mb-4">
                                             <label className="form-label" style={{ marginRight: 470 }} htmlFor="form3Example1q">
                                                 Password
@@ -143,8 +158,11 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
                                             >
                                                 Login
                                             </button>
+                                            <ToastContainer />
                                         </section>
                                     </form>
+                                    
+
                                 </div>
                             </div>
                         </div>
@@ -152,13 +170,31 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
                 </div>
             </section>
 
-            {/* Footer */}
             <footer className="site-footer section-padding" id="contact">
                 <div className="container">
-                    {/* ... Your Footer JSX here ... */}
+                    <div className="row">
+                        <div className="col-lg-5 me-auto col-12">
+                            <h5 className="mb-lg-4 mb-3">Opening Hours</h5>
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item d-flex">
+                                    Monday - Friday <br></br>
+                                    9:00 AM - 12:30 PM<br></br>
+                                    4:00 PM - 7:30 PM
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div className="col-lg-2 col-md-6 col-12 my-4 my-lg-0">
+                            <h5 className="mb-lg-4 mb-3">Our Clinic</h5>
+                            <p>Parasnagar</p>
+                        </div>
+                        <div className="col-lg-3 col-12 ms-auto mt-4 mt-lg-0">
+                            <p className="copyright-text">Copyright © Docotr Desk 2023 </p>
+                        </div>
+                    </div>
                 </div>
             </footer>
-            <ToastContainer />
+
 
         </div>
     )

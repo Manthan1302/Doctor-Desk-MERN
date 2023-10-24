@@ -3,6 +3,9 @@ import PatientNavbar from './PatientNavbar'
 import '../../css/appointmentbook.css'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { ToastContainer, toast } from 'react-toastify';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 function PatientAppointmentBook() {
   const navigate = useNavigate();
@@ -16,7 +19,6 @@ function PatientAppointmentBook() {
   useEffect(() => {
     getMyAppointment();
   }, []);
-
 
   const refresh = (e) => {
     e.preventDefault();
@@ -42,6 +44,16 @@ function PatientAppointmentBook() {
       const response = await axios.post(`http://localhost:8888/patient/bookAppointment?doctor=651acb82241a965a80964200`, appointment, headers)
         .then(res => {
           console.log(res);
+          toast.success('Appointment booked Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           navigate('/patientHome')
         })
     } catch (error) {
@@ -65,6 +77,38 @@ function PatientAppointmentBook() {
       return error;
     }
   }
+  const deleteMyAppointment = async (item) => {
+    const id = item._id;
+    let token = localStorage.getItem("PatientToken");
+    token = JSON.parse(token);
+    try {
+      const headers = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.delete(`http://localhost:8888/patient/cancelAppointment/${id}`, headers)
+        if(response){
+          toast.success('Appointment Deleted', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          navigate("/patientHome");
+        }
+      console.log(response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+  var currentDate = new Date()
+  var day = currentDate.getDate()
+  var month = currentDate.getMonth() + 1
+  var year = currentDate.getFullYear()
+  var date = year + "-" + month + "-" + day;
+
+
   return (
     <div>
 
@@ -91,6 +135,8 @@ function PatientAppointmentBook() {
                       required
                       onChange={setData}
                       value={appointment.bookingDate}
+                      min={date}
+                      max="2023-11-04"
                     />
                   </div>
                 </div>
@@ -105,11 +151,11 @@ function PatientAppointmentBook() {
               <br/> */}
 
 
-                    <input type="radio" name="TimeSlot" value="9-12" onChange={setData} />
+                    <input type="radio" name="TimeSlot" value="9-12" onChange={setData} required />
                     9 AM - 12 PM
                     <br />
                     <label>
-                      <input type="radio" name="TimeSlot" value="4-7" onChange={setData} />
+                      <input type="radio" name="TimeSlot" value="4-7" onChange={setData} required />
                       4 PM - 7 PM
                     </label>
 
@@ -146,7 +192,7 @@ function PatientAppointmentBook() {
                   rows="3" placeholder="Enter Diseases" ></textarea>
               </div>
               <div>
-                <button className="formbold-btn" onClick={bookAppointment}>Book Appointment</button>
+                <button className="formbold-btn" onClick={() => bookAppointment()} >Book Appointment</button>
               </div>
 
             </form>
@@ -162,20 +208,31 @@ function PatientAppointmentBook() {
             <th>Time</th>
             <th>Disease</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {
             myAppointment.map((item) => {
-              return (
-                <tr>
-                  <td>{item.bookingDate}</td>
-                  <td>{item.TimeSlot}</td>
-                  <td>{item.appointmentDiseases}</td>
-                  <td>{item.appointmentStatus}</td>
-                </tr>
+              var currentDate = new Date()
+              var day = currentDate.getDate()
+              var month = currentDate.getMonth() + 1
+              var year = currentDate.getFullYear()
+              var date = year + "-" + month + "-" + day;
+              if (item.bookingDate > date && item.appointmentStatus === "Pending") {
+                return (
+                  <tr>
+                    <td>{item.bookingDate}</td>
+                    <td>{item.TimeSlot}</td>
+                    <td>{item.appointmentDiseases}</td>
+                    <td>{item.appointmentStatus}</td>
+                    <td>
+                      <button type="submit" class="btn btn-danger" onClick={(e) => {deleteMyAppointment(item);refresh(e)}}>Delete</button>
+                    </td>
+                  </tr>
 
-              )
+                )
+              }
             })
           }
 

@@ -1,8 +1,10 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from 'react';
 import PatientNavbar from './PatientNavbar'
 import '../../css/patientProfile.css'
 import axios from 'axios';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function PatientProfile({ updatePatient, updatePatientToken }) {
     const navigate = useNavigate();
@@ -41,12 +43,21 @@ function PatientProfile({ updatePatient, updatePatientToken }) {
         try {
             const headers = { headers: { Authorization: `Bearer ${token}` } };
 
-            const response = await axios.put(`http://localhost:8888/patientUpdate/${_id}`, patient,headers)
+            const response = await axios.put(`http://localhost:8888/patientUpdate/${_id}`, patient, headers)
                 .then(res => {
                     console.log(res);
                     updatePatient(res.data)
                     // updateToken(res.data.token)
-
+                    toast.success('Profile Updated Successfully', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
                     navigate('/patientHome', { replace: true });
                 })
             console.log('response', response);

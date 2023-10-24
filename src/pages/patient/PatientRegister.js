@@ -1,8 +1,9 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
-
-function PatientRegister({ updatePatient, updateToken }) {
+import { ToastContainer, toast } from 'react-toastify';
+function PatientRegister({ updatePatient, updatePatientToken }) {
   const navigate = useNavigate();
 
   const [patient, setPatient] = useState({
@@ -27,21 +28,49 @@ function PatientRegister({ updatePatient, updateToken }) {
       }
     })
   }
+  
 
 
   //register 
   const patientRegister = async () => {
-    console.log(patient);
+    // console.log(patient);
+    const pass1 = document.getElementById("password").value;
+    const pass2 = document.getElementById("confirmPassword").value;
+
     try {
-      const response = await axios.post("http://localhost:8888/patientSignup", patient)
+      if(pass1 === pass2){
+        const response = await axios.post("http://localhost:8888/patientSignup", patient)
         .then(res => {
           console.log(res);
+          
           updatePatient(res.data.newPatient);
-          updateToken(res.data.token)
+          updatePatientToken(res.data.token)
+          toast.success('Register Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           navigate('/patientHome', { replace: true });
         })
+      }
+      else{
+        toast.success('Please Enter Both Password Same', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
 
-      // console.log('response', response);
 
 
     } catch (error) {
@@ -244,13 +273,14 @@ function PatientRegister({ updatePatient, updateToken }) {
                       <button
                         type="submit"
                         className="btn btn-success btn-lg mb-1"
-                        onClick={patientRegister}
+                        onClick={() =>  patientRegister()}
                       >
                         Register
                       </button>
                     </section>
                   </form>
                 </div>
+                <ToastContainer/>
               </div>
             </div>
           </div>
@@ -260,7 +290,26 @@ function PatientRegister({ updatePatient, updateToken }) {
       {/* Footer */}
       <footer className="site-footer section-padding" id="contact">
         <div className="container">
-          {/* ... Your Footer JSX here ... */}
+          <div className="row">
+            <div className="col-lg-5 me-auto col-12">
+              <h5 className="mb-lg-4 mb-3">Opening Hours</h5>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item d-flex">
+                  Monday - Friday <br></br>
+                  9:00 AM - 12:30 PM<br></br>
+                  4:00 PM - 7:30 PM
+                </li>
+
+              </ul>
+            </div>
+            <div className="col-lg-2 col-md-6 col-12 my-4 my-lg-0">
+              <h5 className="mb-lg-4 mb-3">Our Clinic</h5>
+              <p>Parasnagar</p>
+            </div>
+            <div className="col-lg-3 col-12 ms-auto mt-4 mt-lg-0">
+              <p className="copyright-text">Copyright © Docotr Desk 2023 </p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

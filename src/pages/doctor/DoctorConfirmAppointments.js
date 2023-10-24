@@ -25,6 +25,7 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
             console.log('error', error);
         }
     }
+
     const rejectAppointment = async (item) => {
         const id = item._id;
         let token = localStorage.getItem("DoctorToken");

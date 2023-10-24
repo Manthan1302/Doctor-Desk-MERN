@@ -1,4 +1,18 @@
-function PatientNavbar({ updatePatient }) {
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+function PatientNavbar({ updatePatient, updatePatientToken }) {
+    const message = () => {
+        toast.success('Logout Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+    }
     return (
 
         <div>
@@ -29,6 +43,9 @@ function PatientNavbar({ updatePatient }) {
                                 <a className="nav-link" href="/patientAppointment">Appointment</a>
                             </li>
                             <li className="nav-item">
+                                <a className="nav-link" href="/patientAppointmentHistory">Appointment History</a>
+                            </li>
+                            <li className="nav-item">
                                 <a className="nav-link" href="/Patienthome#contact">Contact</a>
                             </li>
 
@@ -41,13 +58,14 @@ function PatientNavbar({ updatePatient }) {
                             </li>
 
                             <li className="nav-item">
-                                <a className="nav-link" href="/" onClick={() => updatePatient({})}>Logout</a>
+                                <a className="nav-link" href="/" onClick={() => { message();updatePatient({}); updatePatientToken({}) ; }}>Logout</a>
                             </li>
 
                         </ul>
                     </div>
 
                 </div>
+                <ToastContainer/>
             </nav>
 
         </div>
