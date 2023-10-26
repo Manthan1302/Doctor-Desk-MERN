@@ -69,7 +69,9 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
 
             updatePatient(res.data.newPatient);
             updatePatientToken(res.data.token);
-            toast.success("Register Successfully", {
+           
+            navigate("/patientHome", { replace: true });
+            return  toast.success("Register Successfully", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -79,7 +81,6 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
               progress: undefined,
               theme: "colored",
             });
-            navigate("/patientHome", { replace: true });
           });
       } else {
         toast.success("Please Enter Both Password Same", {
@@ -323,7 +324,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                     </section>
                   </form>
                 </div>
-                <ToastContainer />
+                
               </div>
             </div>
           </div>
@@ -353,6 +354,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </footer>
     </div>
   );

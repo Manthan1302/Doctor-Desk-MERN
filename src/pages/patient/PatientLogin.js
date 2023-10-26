@@ -33,7 +33,20 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
         console.log(patient);
         try {
             const response = await axios.post("http://localhost:8888/patientSignIn", patient)
-            if (response) {
+            console.log(response);
+            if(!response.data){
+                toast.error('Enter Valid Details', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            }
+            if (response.data) {
                 updatePatient(response.data.patient)
                 updatePatientToken(response.data.token)
                 toast.success('Login Successfully', {
@@ -48,25 +61,14 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
                 });
                 navigate('/patientHome', { replace: true });
             }
-            else {
-                // toast.error('Enter Valid Details', {
-                //     position: "top-right",
-                //     autoClose: 5000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: "colored",
-                // });
-                alert("DSfsf")
-            }
+           
         } catch (error) {
             console.log('error', error);
         }
     }
     return (
         <div>
+            <ToastContainer />
             <nav className="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
                 <div className="container">
                     <a className="navbar-brand mx-auto d-lg-none" href="index.html">
@@ -158,10 +160,9 @@ function PatientLogin({ updatePatient, updatePatientToken }) {
                                             >
                                                 Login
                                             </button>
-                                            <ToastContainer />
                                         </section>
                                     </form>
-                                    
+
 
                                 </div>
                             </div>

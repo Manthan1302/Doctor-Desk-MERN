@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { BallTriangle } from 'react-loader-spinner';
 function DoctorAppointments({ updateDoctor, updateDoctorToken }) {
   const [pendingAppointment, setPendingAppointment] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  const [data, setData1] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Simulate data fetching from the server
+    setTimeout(() => {
+      fetch('https://api.example.com/data')
+        .then((response) => response.json())
+        .then((result) => {
+          setData1(result);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching data: ', error);
+          setLoading(false);
+        });
+    }, 2000); // Simulated server delay of 2 seconds
+  }, []);
+
 
   useEffect(() => {
     getPendingAppointments();
@@ -138,59 +157,66 @@ function DoctorAppointments({ updateDoctor, updateDoctorToken }) {
             </div>
           </div>
 
-          <table class="table">
-            <thead class="table-success">
-              <tr>
-                <th>Patient Name</th>
-                <th>Contact Number</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Disease</th>
-                <th>Date</th>
+          {loading ? (
+            <div className="loader">
+              <center><BallTriangle color="#007BFF" width={1500} size={100} loading={loading}></BallTriangle></center>
+              <center><p>Loading...</p></center>
+            </div>
+          ) : (
+            <table class="table">
+              <thead class="table-success">
+                <tr>
+                  <th>Patient Name</th>
+                  <th>Contact Number</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>Disease</th>
+                  <th>Date</th>
 
-                <th colspan="2" style={{ "text-align": "center" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {pendingAppointment.map((item) => {
-                if (
-                  item.TimeSlot === "9-12" &&
-                  item.appointmentStatus === "Pending"
-                ) {
-                  return (
-                    <tr>
-                      <td>{item.patient.patientName}</td>
-                      <td>{item.patient.patientPhoneNumber}</td>
-                      <td>{item.patient.patientAge}</td>
-                      <td>{item.patient.patientGender}</td>
-                      <td>{item.appointmentDiseases}</td>
-                      <td>{item.bookingDate}</td>
-                      <td>
-                        <button
-                          type="submit"
-                          class="btn btn-success"
-                          onClick={() => updateAppointment(item)}
-                        >
-                          Accept
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          type="submit"
-                          class="btn btn-danger"
-                          onClick={() => rejectAppointment(item)}
-                        >
-                          Reject
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                }
-              })}
-            </tbody>
-          </table>
+                  <th colspan="2" style={{ "text-align": "center" }}>
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingAppointment.map((item) => {
+                  if (
+                    item.TimeSlot === "9-12" &&
+                    item.appointmentStatus === "Pending"
+                  ) {
+                    return (
+                      <tr>
+                        <td>{item.patient.patientName}</td>
+                        <td>{item.patient.patientPhoneNumber}</td>
+                        <td>{item.patient.patientAge}</td>
+                        <td>{item.patient.patientGender}</td>
+                        <td>{item.appointmentDiseases}</td>
+                        <td>{item.bookingDate}</td>
+                        <td>
+                          <button
+                            type="submit"
+                            class="btn btn-success"
+                            onClick={() => updateAppointment(item)}
+                          >
+                            Accept
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="submit"
+                            class="btn btn-danger"
+                            onClick={() => rejectAppointment(item)}
+                          >
+                            Reject
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          )}
         </section>
         <section style={{ padding: "15px" }}>
           <div class="flex">
@@ -199,58 +225,65 @@ function DoctorAppointments({ updateDoctor, updateDoctorToken }) {
             </div>
           </div>
 
-          <table class="table">
-            <thead class="table-success">
-              <tr>
-                <th>Patient Name</th>
-                <th>Contact Number</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Disease</th>
-                <th>Date</th>
-                <th colspan="2" style={{ "text-align": "center" }}>
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {pendingAppointment.map((item) => {
-                if (
-                  item.TimeSlot === "4-7" &&
-                  item.appointmentStatus === "Pending"
-                ) {
-                  return (
-                    <tr>
-                      <td>{item.patient.patientName}</td>
-                      <td>{item.patient.patientPhoneNumber}</td>
-                      <td>{item.patient.patientAge}</td>
-                      <td>{item.patient.patientGender}</td>
-                      <td>{item.appointmentDiseases}</td>
-                      <td>{item.bookingDate}</td>
-                      <td>
-                        <button
-                          type="submit"
-                          class="btn btn-success"
-                          onClick={() => updateAppointment(item)}
-                        >
-                          Accept
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          type="submit"
-                          class="btn btn-danger"
-                          onClick={() => rejectAppointment(item)}
-                        >
-                          Reject
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                }
-              })}
-            </tbody>
-          </table>
+          {loading ? (
+            <div className="loader">
+              <center><BallTriangle color="#007BFF" width={1500} size={100} loading={loading}></BallTriangle></center>
+              <center><p>Loading...</p></center>
+            </div>
+          ) : (
+            <table class="table">
+              <thead class="table-success">
+                <tr>
+                  <th>Patient Name</th>
+                  <th>Contact Number</th>
+                  <th>Age</th>
+                  <th>Gender</th>
+                  <th>Disease</th>
+                  <th>Date</th>
+                  <th colspan="2" style={{ "text-align": "center" }}>
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingAppointment.map((item) => {
+                  if (
+                    item.TimeSlot === "4-7" &&
+                    item.appointmentStatus === "Pending"
+                  ) {
+                    return (
+                      <tr>
+                        <td>{item.patient.patientName}</td>
+                        <td>{item.patient.patientPhoneNumber}</td>
+                        <td>{item.patient.patientAge}</td>
+                        <td>{item.patient.patientGender}</td>
+                        <td>{item.appointmentDiseases}</td>
+                        <td>{item.bookingDate}</td>
+                        <td>
+                          <button
+                            type="submit"
+                            class="btn btn-success"
+                            onClick={() => updateAppointment(item)}
+                          >
+                            Accept
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="submit"
+                            class="btn btn-danger"
+                            onClick={() => rejectAppointment(item)}
+                          >
+                            Reject
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          )}
         </section>
       </main>
     </div>

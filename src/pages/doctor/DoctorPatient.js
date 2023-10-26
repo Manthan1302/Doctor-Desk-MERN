@@ -1,7 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BallTriangle } from 'react-loader-spinner';
 function DoctorPatient({ updateDoctor, updateDoctorToken }) {
     const [allPatients, setAllPatients] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [data, setData1] = useState(null);
+
+    useEffect(() => {
+        // Simulate data fetching from the server
+        setTimeout(() => {
+            fetch('https://api.example.com/data')
+                .then((response) => response.json())
+                .then((result) => {
+                    setData1(result);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Error fetching data: ', error);
+                    setLoading(false);
+                });
+        }, 2000); // Simulated server delay of 2 seconds
+    }, []);
 
     useEffect(() => {
         getAllPatients();
@@ -55,21 +74,27 @@ function DoctorPatient({ updateDoctor, updateDoctorToken }) {
                     </div>
                 </nav>
                 <section style={{ padding: "15px" }}>
-                    <table className="table">
-                        <thead className="table-success">
-                            <tr>
-                                <th>Patient Name</th>
-                                <th>Contact Number</th>
-                                <th>Email id</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                                allPatients.map((item) => {
-                                    console.log('item',item);
-                                    return (
+                    {loading ? (
+                        <div className="loader">
+                            <center><BallTriangle color="#007BFF" width={1500} size={100} loading={loading}></BallTriangle></center>
+                            <center><p>Loading...</p></center>
+                        </div>
+                    ) : (
+                        <table className="table">
+                            <thead className="table-success">
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Email id</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    allPatients.map((item) => {
+                                        console.log('item', item);
+                                        return (
                                             <tr>
                                                 <td>{item.patientName}</td>
                                                 <td>{item.patientPhoneNumber}</td>
@@ -79,11 +104,12 @@ function DoctorPatient({ updateDoctor, updateDoctorToken }) {
                                             </tr>
                                         )
 
-                                })
-                            }
+                                    })
+                                }
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    )}
                 </section>
             </main>
         </div>
