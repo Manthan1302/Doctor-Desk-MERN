@@ -15,18 +15,24 @@ import DoctorConfirmAppointments from './pages/doctor/DoctorConfirmAppointments'
 import AdminDashboard from './pages/admin/AdminDashboard';
 import PatientAppointmentHistory from "./pages/patient/PatientAppointmentHistory";
 import Prescription from './pages/doctor/Prescription';
+import AdminLogin from './pages/admin/AdminLogin';
+import ViewDoctor from './pages/admin/ViewDoctor';
+import DoctorProfile from "./pages/doctor/DoctorProfile";
 function App() {
   const [patient, setPatient] = useState({});
   const [patientToken,setPatientToken] = useState({});
   const [doctor,setDoctor] = useState({});
   const [doctorToken,setDoctorToken] = useState({});
-
+  const [admin,setAdmin] = useState({});
+  const [adminToken,setAdminToken] = useState({});
 
   useEffect(() => {
     setPatient(JSON.parse(localStorage.getItem("MyPatient")));
     setPatientToken(JSON.parse(localStorage.getItem("PatientToken")));
     setDoctor(JSON.parse(localStorage.getItem("Doctor")));
     setDoctorToken(JSON.parse(localStorage.getItem("DoctorToken")));
+    setAdmin(JSON.parse(localStorage.getItem("Admin")));
+    setAdminToken(JSON.parse(localStorage.getItem("AdminToken")));
   }, [])
 
   const updatePatient = (patient) => {
@@ -46,6 +52,14 @@ function App() {
     localStorage.setItem("Doctor",JSON.stringify(doctor))
     setDoctor(doctor)
   }
+  const updateAdminToken = (token)=>{
+    localStorage.setItem("AdminToken",JSON.stringify(token))
+    setAdminToken(token);
+  }
+  const updateAdmin = (admin)=>{
+    localStorage.setItem("Admin",JSON.stringify(admin))
+    setAdmin(admin)
+  }
   return (
     <>
       <Routes>
@@ -64,6 +78,14 @@ function App() {
           }
           
         </Route>
+        <Route path='/admin'>
+          {
+            admin && admin._id
+              ? (<Route path='/admin' element={<AdminDashboard updateAdmin={updateAdmin}  updateAdminToken={updateAdminToken}/>}></Route>)
+              : (<Route path='/admin' element={<AdminLogin updateAdmin={updateAdmin}   updateAdminToken={updateAdminToken}/>}></Route>)
+          }
+          
+        </Route>
         <Route path='/patientRegister' element={<PatientRegister updatePatient={updatePatient} updatePatientToken={updatePatientToken}></PatientRegister>}></Route>
         <Route path='/patientProfile' element={<PatientProfile  updatePatient={updatePatient} updatePatientToken={updatePatientToken}></PatientProfile>}/>
         <Route path='/patientAppointment' Component={PatientAppointmentBook} />
@@ -79,9 +101,12 @@ function App() {
         <Route path='/doctorAppointments' Component={DoctorAppointments} />
         <Route path='/doctorConfirmAppointments' element={<DoctorConfirmAppointments updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
         <Route path='/makePrescription' element={<Prescription updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
+        <Route path='/doctorProfile' element={<DoctorProfile updateDoctor={updateDoctor}  updateDoctorToken={updateDoctorToken}/>} />
 
 
         <Route path='/adminDashboard' Component={AdminDashboard} />
+        <Route path='/admin' Component={AdminLogin} />
+        <Route path='/viewDoctor' element={<ViewDoctor  updateAdmin={updateAdmin}   updateAdminToken={updateAdminToken}></ViewDoctor>} />
       </Routes>
     </>
   );

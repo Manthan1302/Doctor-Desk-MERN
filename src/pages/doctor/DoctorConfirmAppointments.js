@@ -6,7 +6,7 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
     const [approveAppointment, setApprovedAppointment] = useState([]);
     const [loading, setLoading] = useState(true);
     const [data, setData1] = useState(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         // Simulate data fetching from the server
         setTimeout(() => {
@@ -64,6 +64,11 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
             console.log("error", error);
         }
     };
+
+    //call prescription component
+    const goPrescription =(item)=>{
+        navigate('/makePrescription',{state:{item:item}})
+    }
     return (
         <div>
             <main>
@@ -104,8 +109,13 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/doctorPatient">
+                                    <a class="nav-link" href="/doctorProfile">
                                         Patients
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/doctorPatient">
+                                        My Profile
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -147,11 +157,13 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                     <th>Gender</th>
                                     <th>Disease</th>
                                     <th>Date</th>
-                                    <th>Action</th>
+                                    <th colspan="2" style={{ "text-align": "center" }}>Action</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 {approveAppointment.map((item) => {
+                                    
                                     if (
                                         item.TimeSlot === "9-12" &&
                                         item.appointmentStatus === "approved"
@@ -171,6 +183,15 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                                         onClick={() => rejectAppointment(item)}
                                                     >
                                                         Reject
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                        onClick={()=>goPrescription(item)}
+                                                        >
+                                                            Make Prescription
                                                     </button>
                                                 </td>
                                             </tr>
@@ -203,7 +224,7 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                     <th>Gender</th>
                                     <th>Disease</th>
                                     <th>Date</th>
-                                    <th>Action</th>
+                                    <th colspan="2" style={{ "text-align": "center" }}>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -227,6 +248,15 @@ function DoctorConfirmAppointments({ updateDoctor, updateDoctorToken }) {
                                                         onClick={() => rejectAppointment(item)}
                                                     >
                                                         Reject
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                        onClick={()=>goPrescription(item)}
+                                                        >
+                                                            Make Prescription
                                                     </button>
                                                 </td>
                                             </tr>

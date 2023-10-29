@@ -69,9 +69,9 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
 
             updatePatient(res.data.newPatient);
             updatePatientToken(res.data.token);
-           
+
             navigate("/patientHome", { replace: true });
-            return  toast.success("Register Successfully", {
+            return toast.success("Register Successfully", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -184,6 +184,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                         pattern="[6-9]\d{9}"
                         title="Incorrect Mobile Number"
                         required
+                        maxlength="10"
                         onChange={setData}
                       />
                     </div>
@@ -324,7 +325,7 @@ function PatientRegister({ updatePatient, updatePatientToken }) {
                     </section>
                   </form>
                 </div>
-                
+
               </div>
             </div>
           </div>

@@ -134,6 +134,11 @@ function DoctorAppointments({ updateDoctor, updateDoctorToken }) {
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="/doctorProfile">
+                    My Profile
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a
                     class="nav-link"
                     href="/doctor"

@@ -1,22 +1,77 @@
 // import { addmedicine } from '../../css/addmedicine.js'
 // import '../../css/addmedicine.css'
-
-
+import React, { useState } from 'react';
+import { NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { saveAs } from 'file-saver';
+import axios from "axios";
 
 function Prescription() {
+    const navigate = useNavigate();
+
+    const [data, setData] = useState({
+        patientName: '',
+        patientNumber: 0,
+        patientAge: 0,
+        MedicineName: '',
+        Dosage: '',
+        Duration: '',
+        specialIntro: '',
+    });
+
+    const location = useLocation();
+    console.log(location.state.item)
+    const patient = location.state.item;
+    console.log(patient);
+    const patientName = patient.patient.patientName;
+    const patientNUmber = patient.patient.patientPhoneNumber;
+    const patientAge = patient.patient.patientAge;
+    const _id = patient._id
+    const handleChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setData({ ...data, [name]: value });
+    };
+
+
+    const createAndDownloadPdf = async () => {
+        console.log("Data", data);
+        axios
+            .post('http://localhost:8888/create-pdf', data)
+            .then((res) => {
+                // const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+                // saveAs(pdfBlob, 'newPdf.pdf');
+                let token = localStorage.getItem("DoctorToken");
+                token = JSON.parse(token);
+                try {
+                    const headers = { headers: { Authorization: `Bearer ${token}` } };
+                    const response = axios.delete(
+                        `http://localhost:8888/doctor/cancelAppointment/${_id}`,
+                        headers
+                    );
+                    navigate("/doctorConfirmAppointments");
+
+                    console.log(response);
+                } catch (error) {
+                    console.log("error", error);
+                }
+                console.log(res);
+            });
+    };
+
+
     var counter = 1
-    function addmedicine() {
-        ;
-        counter++;
+    // function addmedicine() {
+    //     ;
+    //     counter++;
 
 
-        let fr = document.getElementById("frm").innerHTML
+    //     let fr = document.getElementById("frm").innerHTML
 
-        document.getElementById("counter").innerText = "Medicines:" + counter
-        document.getElementById("tableArea").innerHTML = fr
+    //     document.getElementById("counter").innerText = "Medicines:" + counter
+    //     document.getElementById("tableArea").innerHTML = fr
 
 
-    }
+    // }
 
 
     return (
@@ -30,85 +85,69 @@ function Prescription() {
                                 <div class="card-body p-4 p-md-5">
 
                                     <h1>Prescription Form</h1>
-                                    <form action="process-prescription.php" method="POST">
-
-                                        <div class="form-group">
-                                            <label for="patientName">Patient Name:</label>
-                                            <input type="text" class="form-control" id="patientName" name="patientName" required /><br />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="currentDate">Current Date:</label>
-                                            <input type="date" class="form-control" id="currentDate" name="currentDate" required /><br />
-
-                                        </div>
 
 
-                                        <div class="form-group">
-                                            <label for="patientPhoneNumber">Patient Phone Number:</label>
-                                            <input type="tel" class="form-control" id="patientPhoneNumber" name="patientPhoneNumber" required /><br />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="patientAge">Patient Age:</label>
-                                            <input type="number" class="form-control" id="patientAge" name="patientAge" required /><br />
-                                        </div>
-
-                                        <label for="clinicAddress">Clinic Address:</label>
-                                        <input type="text" class="form-control" id="clinicAddress" name="clinicAddress" required /><br />
-
-                                        <label for="diagnosis">Diagnosis:</label>
-                                        <textarea id="diagnosis" class="form-control" name="diagnosis" rows="4" required></textarea><br />
-                                        <div class="form-group">
-                                            <label for="doctorName">Doctor's Name:</label>
-                                            <input type="text" class="form-control" id="doctorName" name="doctorName" required /><br />
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="patientName">Patient Name:</label>
+                                        <input type="text" class="form-control"
+                                            id="patientName"
+                                            name="patientName"
+                                            // value={patient.patient.patientName}
+                                            onChange={handleChange}
+                                            required /><br />
+                                    </div>
 
 
 
 
-                                        <form id="frm">
-
-                                            <h2 id="counter"> Medicines:1</h2>
-
-
-                                            <label for="medication1Name">Medication 1 Name:</label>
-                                            <input type="text" class="form-control" id="medication1Name" name="medication1Name" required /><br />
-
-                                            <div class="form-group">
-                                                <label for="medication1Dosage">Dosage:</label>
-                                                <input type="text" class="form-control" value="1-1-1" id="medication1Dosage" name="medication1Dosage" required /><br />
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="medication1Frequency">Frequency:</label>
-                                                <input type="text" class="form-control" id="medication1Frequency" name="medication1Frequency" required /><br />
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="medication1Duration">Duration:</label>
-                                                <input type="text" id="medication1Duration" name="medication1Duration" required /><br />
-
-                                            </div>
+                                    <div class="form-group">
+                                        <label for="patientPhoneNumber">Patient Phone Number:</label>
+                                        <input type="tel" class="form-control"
+                                            id="patientPhoneNumber"
+                                            name="patientNumber"
+                                            // value={patientNUmber}
+                                            onChange={handleChange}
+                                            required /><br />
+                                    </div>
 
 
-                                            <div class="form-group">
-                                                <label for="specialInstructions">Special Instructions:</label>
-                                                <textarea id="specialInstructions" class="form-control" name="specialInstructions" rows="4"></textarea><br />
+                                    <h2 id="counter"> Medicines:1</h2>
 
-                                            </div>
 
-                                            <div id="tableArea">
+                                    <label for="medication1Name">Medication 1 Name:</label>
+                                    <input type="text" class="form-control"
+                                        onChange={handleChange}
+                                        id="medication1Name"
+                                        name="MedicineName" required /><br />
 
-                                            </div>
-                                        </form>
+                                    <div class="form-group">
+                                        <label for="medication1Dosage">Dosage:</label>
+                                        <input type="text" class="form-control"
+                                            onChange={handleChange} id="Dosage" 
+                                            name="Dosage" required /><br />
+                                    </div>
 
 
 
-                                        <input type="submit" className="flex" value="Submit" />
-                                        <button className="btn btn-primary" onClick={addmedicine}>Add medicine</button>
+                                    <div class="form-group">
+                                        <label for="medication1Duration">Duration:</label>
+                                        <input type="text" id="medication1Duration"
+                                            class="form-control"
+                                            onChange={handleChange} name="Duration" required /><br />
 
-                                    </form>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="specialInstructions">Special Instructions:</label>
+                                        <textarea id="specialInstructions"
+                                            onChange={handleChange}
+                                            class="form-control" name="specialIntro" rows="4"></textarea><br />
+                                    </div>
+                                    <input type="submit" className="btn btn-primary" onClick={() => createAndDownloadPdf()} value="Submit" />
+                                    {/* <button className="btn btn-primary" onClick={addmedicine}>Add medicine</button> */}
+
+
 
                                 </div>
                             </div>

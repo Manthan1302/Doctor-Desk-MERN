@@ -66,6 +66,11 @@ function DoctorPatient({ updateDoctor, updateDoctorToken }) {
                                 <li className="nav-item active">
                                     <a className="nav-link" href="/doctorPatient">Patients</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/doctorProfile">
+                                        My Profile
+                                    </a>
+                                </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/doctor" onClick={() => { updateDoctor({}); updateDoctorToken({}) }}>Logout</a>
                                 </li>
